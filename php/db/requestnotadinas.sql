@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: sql303.infinityfree.com
--- Waktu pembuatan: 17 Nov 2024 pada 04.37
--- Versi server: 10.6.19-MariaDB
--- Versi PHP: 7.2.22
+-- Host: localhost:3306
+-- Generation Time: Nov 20, 2024 at 04:32 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,25 +18,53 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `if0_35735599_web_notadinas`
+-- Database: `requestnotadinas`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `mahasiswa`
+-- Table structure for table `ambilnomor`
+--
+
+CREATE TABLE `ambilnomor` (
+  `id` int NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `satfung` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Hal` varchar(200) NOT NULL,
+  `no_ndkeluar` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `backup`
+--
+
+CREATE TABLE `backup` (
+  `id` int NOT NULL,
+  `kepada` varchar(100) NOT NULL,
+  `perihal` varchar(200) NOT NULL,
+  `no_ndkeluar` varchar(100) NOT NULL,
+  `tanggal` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mahasiswa`
 --
 
 CREATE TABLE `mahasiswa` (
-  `id` int(11) NOT NULL,
-  `kepada` varchar(100) DEFAULT NULL,
-  `perihal` char(250) DEFAULT NULL,
-  `no_ndkeluar` varchar(100) DEFAULT NULL,
-  `tanggal` varchar(100) DEFAULT NULL
+  `id` int NOT NULL,
+  `kepada` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `perihal` char(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `no_ndkeluar` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tanggal` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `mahasiswa`
+-- Dumping data for table `mahasiswa`
 --
 
 INSERT INTO `mahasiswa` (`id`, `kepada`, `perihal`, `no_ndkeluar`, `tanggal`) VALUES
@@ -158,17 +185,17 @@ INSERT INTO `mahasiswa` (`id`, `kepada`, `perihal`, `no_ndkeluar`, `tanggal`) VA
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`) VALUES
@@ -181,32 +208,56 @@ INSERT INTO `user` (`id`, `username`, `password`) VALUES
 --
 
 --
--- Indeks untuk tabel `mahasiswa`
+-- Indexes for table `ambilnomor`
+--
+ALTER TABLE `ambilnomor`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `backup`
+--
+ALTER TABLE `backup`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `mahasiswa`
+-- AUTO_INCREMENT for table `ambilnomor`
+--
+ALTER TABLE `ambilnomor`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `backup`
+--
+ALTER TABLE `backup`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+
+--
+-- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
