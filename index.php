@@ -1,40 +1,59 @@
 <?php
 require './php/function.php';
 
-// Cek nomor terakhir dari tabel `ambilnomor`
+// Ambil nomor terakhir dari tabel `ambilnomor`
 $nomorTerakhirAmbilNomor = query("SELECT no_ndkeluar FROM ambilnomor ORDER BY id DESC LIMIT 1");
 $nomorTerakhir = !empty($nomorTerakhirAmbilNomor) ? $nomorTerakhirAmbilNomor[0]['no_ndkeluar'] : '';
 
-// Jika tabel `ambilnomor` kosong, cek tabel `mahasiswa`
+// Jika tabel `ambilnomor` kosong, cek data di tabel `mahasiswa`
 if (empty($nomorTerakhir)) {
-  $nomorTerakhirMahasiswa = query("SELECT no_ndkeluar FROM mahasiswa ORDER BY id DESC LIMIT 1");
-  $nomorTerakhir = !empty($nomorTerakhirMahasiswa) ? $nomorTerakhirMahasiswa[0]['no_ndkeluar'] : 'B/ND-0/XI/LOG.5.6./2024/Baglog';
+    $nomorTerakhirMahasiswa = query("SELECT no_ndkeluar FROM mahasiswa ORDER BY id DESC LIMIT 1");
+    $nomorTerakhir = !empty($nomorTerakhirMahasiswa) ? $nomorTerakhirMahasiswa[0]['no_ndkeluar'] : '';
 }
 
-// Ekstraksi angka terakhir menggunakan regex
-preg_match('/B\/ND-(\d+)\/XI\/LOG\.5\.6\.\/2024\/Baglog/', $nomorTerakhir, $matches);
-$angkaTerakhir = isset($matches[1]) ? (int)$matches[1] : 0;
+// Jika semua tabel kosong, gunakan format default
+if (empty($nomorTerakhir)) {
+    $nomorTerakhir = "B/ND-000/XI/LOG.5.6./2024/Baglog";
+}
 
-// Tambahkan 1 ke nomor terakhir untuk nomor baru
-$angkaBaru = $angkaTerakhir + 1;
+// Ekstraksi angka terakhir dan format lainnya menggunakan regex
+preg_match('/(B\/ND-)(\d+)(\/.*)/', $nomorTerakhir, $matches);
 
-// Format nomor baru
-$nomorBaru = sprintf("B/ND-%03d/XI/LOG.5.6./2024/Baglog", $angkaBaru);
+if (!empty($matches)) {
+    $prefix = $matches[1]; // Bagian depan, misalnya: "B/ND-"
+    $angkaTerakhir = (int)$matches[2]; // Angka terakhir
+    $sisaFormat = $matches[3]; // Format setelah angka, misalnya: "/XI/LOG.5.6./2024/Baglog"
 
-// Handle form submission
+    // Tambahkan 1 ke angka terakhir
+    $angkaBaru = $angkaTerakhir + 1;
+
+    // Format nomor baru
+    $nomorBaru = $prefix . sprintf('%03d', $angkaBaru) . $sisaFormat;
+} else {
+    // Jika nomor terakhir tidak sesuai pola, gunakan format default
+    $nomorBaru = "B/ND-001/XI/LOG.5.6./2024/Baglog";
+}
+
+// Jika form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $nama = $_POST['nama'];
-  $satfung = $_POST['satfung'];
-  $hal = $_POST['hal'];
+    $customFormat = $_POST['customFormat']; // Format yang diubah oleh user
+    $nama = $_POST['nama'];
+    $satfung = $_POST['satfung'];
+    $hal = $_POST['hal'];
 
-  // Simpan data ke tabel `ambilnomor`
-  $insertQuery = "INSERT INTO ambilnomor (nama, satfung, hal, no_ndkeluar) VALUES ('$nama', '$satfung', '$hal', '$nomorBaru')";
-  if (mysqli_query($koneksi, $insertQuery)) {
-    // Redirect dengan parameter success
-    header("Location: " . $_SERVER['PHP_SELF'] . "?success=true");
-    exit();
-  }
+    // Simpan format yang diinput user ke database
+    $insertQuery = "INSERT INTO ambilnomor (nama, satfung, hal, no_ndkeluar) VALUES ('$nama', '$satfung', '$hal', '$customFormat')";
+    if (mysqli_query($koneksi, $insertQuery)) {
+        $nomorTerakhir = $customFormat;
+
+        // Redirect dengan parameter success
+        header("Location: " . $_SERVER['PHP_SELF'] . "?success=true");
+        exit();
+    }
 }
+
+
+
 ?>
 
 <!doctype html>
@@ -97,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" class="form-control" placeholder="Perihal..." name="hal" required />
 
             <label class="mt-4">No Nota Dinas Anda <span class="text-danger fst-italic">(Note: untuk bulan & KKA silahkan edit sendiri</span> <span class="text-danger">😁)</span></label>
-            <input type="text" class="form-control" value="<?= $nomorBaru ?>"/>
+            <input type="text" class="form-control" value="<?= $nomorBaru ?>" name="customFormat"/>
 
             <div class="trigger-submit d-flex justify-content-end align-items-end">
               <button class="btn mt-4 btn-primary" type="submit">
