@@ -1,22 +1,63 @@
 /* fonts google */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 /* format --color */
 :root {
-    --background--: #181818;
-    --blue-color--: #2666CF;
-    --red-color-- : #C62E2E;
-    --primary-color--: #1E1E1E;
-    --white-color--: #FFFFFF;
+  --background--: #181818;
+  --blue-color--: #2666cf;
+  --red-color--: #c62e2e;
+  --primary-color--: #1e1e1e;
+  --white-color--: #ffffff;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--background--);
+  font-family: "Roboto", sans-serif;
+  background-color: var(--background--);
 }
 
+/* Navbar */
+.navbar {
+  background-color: var(--primary-color--);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--white-color--);
+}
+.navbar img {
+  width: 50px;
+  height: 60px;
+}
+
+/* judul & note */
+.text .judul-h2 {
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--white-color--);
+}
+.text .note {
+    color: var(--red-color--);
+    font-size: 20px;
+}
+
+/* Form */
+form label {
+  color: var(--white-color--);
+}
+
+/* style java script tombol */
+#formContainer {
+  opacity: 0;
+  transform: scale(0.9);
+  display: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Animasi ketika form ditampilkan */
+#formContainer.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
